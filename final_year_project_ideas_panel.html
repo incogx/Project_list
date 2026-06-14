@@ -153,10 +153,16 @@ h3{font-size:15px;font-weight:700;margin-bottom:.5rem;color:var(--text)}
     <div class="toolbar">
       <input class="search-input" placeholder="Search projects..." oninput="filterCards(this.value)" id="search-box" />
       <div class="filter-row">
-        <button class="filter-btn on" onclick="setDif('all',this)">All</button>
-        <button class="filter-btn" onclick="setDif('Medium',this)">Medium</button>
-        <button class="filter-btn" onclick="setDif('Hard',this)">Hard</button>
-        <button class="filter-btn" onclick="setDif('Very Hard',this)">Very Hard</button>
+        <button class="filter-btn filter-btn-dif on" onclick="setDif('all',this)">All</button>
+        <button class="filter-btn filter-btn-dif" onclick="setDif('Medium',this)">Medium</button>
+        <button class="filter-btn filter-btn-dif" onclick="setDif('Hard',this)">Hard</button>
+        <button class="filter-btn filter-btn-dif" onclick="setDif('Very Hard',this)">Very Hard</button>
+      </div>
+      <div class="filter-row">
+        <button class="filter-btn filter-btn-cost on" onclick="setCost('all',this)">Any cost</button>
+        <button class="filter-btn filter-btn-cost" onclick="setCost('low',this)">Under ₹10k</button>
+        <button class="filter-btn filter-btn-cost" onclick="setCost('mid',this)">₹10k–₹20k</button>
+        <button class="filter-btn filter-btn-cost" onclick="setCost('high',this)">Above ₹20k</button>
       </div>
     </div>
     <div id="cards-container"></div>
@@ -292,7 +298,7 @@ function score(v,max){const pct=v/max*100;return `<div style="display:inline-fle
 
 function buildCard(p,idx){
   const isTop=TOP10.includes(p.id);
-  return `<div class="project-card${isTop?' featured':''}" id="card-${p.id}" data-dif="${p.dif}" data-title="${p.title.toLowerCase()}">
+  return `<div class="project-card${isTop?' featured':''}" id="card-${p.id}" data-dif="${p.dif}" data-cost="${p.cost}" data-title="${p.title.toLowerCase()}">
     <div class="card-header">
       <div class="card-num">${idx+1}</div>
       <div>
@@ -338,19 +344,46 @@ function toggleExtra(id){
 }
 
 let curDif='all';
+let curCost='all';
+
+function parseCostValue(cost){
+  const numbers=(cost||'').replace(/,/g,'').match(/\d+(?:\.\d+)?/g);
+  if(!numbers||!numbers.length) return null;
+  return Math.max(...numbers.map(Number));
+}
+
+function matchesCost(costValue){
+  if(curCost==='all') return true;
+  const maxCost=parseCostValue(costValue);
+  if(maxCost===null) return false;
+  if(curCost==='low') return maxCost < 10000;
+  if(curCost==='mid') return maxCost >= 10000 && maxCost <= 20000;
+  if(curCost==='high') return maxCost > 20000;
+  return true;
+}
+
 function filterCards(q){
   const search=q.toLowerCase();
   document.querySelectorAll('.project-card').forEach(c=>{
     const t=c.dataset.title||'';
     const d=c.dataset.dif||'';
+    const cost=c.dataset.cost||'';
     const matchSearch=t.includes(search);
     const matchDif=curDif==='all'||d===curDif;
-    c.style.display=(matchSearch&&matchDif)?'':'none';
+    const matchCost=matchesCost(cost);
+    c.style.display=(matchSearch&&matchDif&&matchCost)?'':'none';
   });
 }
 function setDif(dif,btn){
   curDif=dif;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.filter-btn-dif').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  filterCards(document.getElementById('search-box').value);
+}
+
+function setCost(cost,btn){
+  curCost=cost;
+  document.querySelectorAll('.filter-btn-cost').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   filterCards(document.getElementById('search-box').value);
 }
