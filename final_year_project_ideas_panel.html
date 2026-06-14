@@ -1,0 +1,443 @@
+
+<style>
+:root{
+  --bg-0:#f5f7fb;
+  --bg-1:#edf3f8;
+  --surface:rgba(255,255,255,.82);
+  --surface-strong:#ffffff;
+  --surface-muted:#f2f6fa;
+  --border:rgba(18,35,54,.10);
+  --border-strong:rgba(24,95,165,.24);
+  --text:#14243a;
+  --text-muted:#5f6d81;
+  --accent:#185FA5;
+  --accent-2:#1D9E75;
+  --shadow:0 18px 45px rgba(16, 32, 53, .10);
+  --shadow-soft:0 8px 22px rgba(16, 32, 53, .08);
+  --radius-sm:12px;
+  --radius-md:16px;
+  --radius-lg:24px;
+  --radius-xl:32px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Aptos","Segoe UI Variable Text","Segoe UI",sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  color:var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(24,95,165,.12), transparent 32%),
+    radial-gradient(circle at 85% 0%, rgba(29,158,117,.10), transparent 24%),
+    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 100%);
+  min-height:100vh;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:linear-gradient(rgba(20,36,58,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(20,36,58,.03) 1px, transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(180deg, rgba(0,0,0,.9), transparent 92%);
+  opacity:.55;
+}
+h2{font-size:clamp(28px,3vw,40px);font-weight:700;line-height:1.05;letter-spacing:-.04em;margin-bottom:.75rem}
+h3{font-size:15px;font-weight:700;margin-bottom:.5rem;color:var(--text)}
+.page-shell{max-width:1280px;margin:0 auto;padding:32px 20px 48px;position:relative;z-index:1}
+.hero{position:relative;overflow:hidden;border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px 28px 24px;margin-bottom:18px;background:linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,255,255,.68));backdrop-filter:blur(14px);box-shadow:var(--shadow)}
+.hero::after{content:"";position:absolute;inset:auto -90px -120px auto;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle, rgba(24,95,165,.18) 0%, rgba(24,95,165,0) 70%);pointer-events:none}
+.hero-copy{max-width:900px;position:relative;z-index:1}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.meta-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.8);border:1px solid var(--border);color:var(--text-muted);font-size:12px;font-weight:600;box-shadow:0 4px 18px rgba(16,32,53,.05)}
+.meta-dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.hero p{max-width:860px;font-size:14px;color:var(--text-muted)}
+.stats-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px}
+.stat-card{padding:14px 16px;border-radius:18px;background:var(--surface);border:1px solid var(--border);box-shadow:0 10px 24px rgba(16,32,53,.05)}
+.stat-value{font-size:24px;font-weight:800;line-height:1;color:var(--text);letter-spacing:-.04em}
+.stat-label{margin-top:6px;font-size:12px;color:var(--text-muted)}
+.tab-bar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 18px;padding:12px;background:rgba(255,255,255,.62);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(12px);box-shadow:var(--shadow-soft);position:sticky;top:14px;z-index:10}
+.tab{padding:10px 14px;border-radius:999px;border:1px solid transparent;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:-.01em;color:var(--text-muted);background:transparent;transition:transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease}
+.tab:hover{transform:translateY(-1px);background:rgba(255,255,255,.9);border-color:var(--border)}
+.tab.active{background:linear-gradient(135deg, var(--accent), #2a78c5);color:#fff;border-color:transparent;box-shadow:0 10px 24px rgba(24,95,165,.25)}
+.section{display:none}.section.active{display:block}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.search-input{padding:11px 14px;border-radius:14px;border:1px solid var(--border);font-size:13px;width:min(340px,100%);background:rgba(255,255,255,.9);color:var(--text);box-shadow:0 8px 18px rgba(16,32,53,.04);transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease}
+.search-input:focus{outline:none;border-color:rgba(24,95,165,.35);box-shadow:0 0 0 4px rgba(24,95,165,.10), 0 10px 22px rgba(16,32,53,.06)}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-btn{padding:8px 12px;border-radius:999px;border:1px solid var(--border);font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.76);color:var(--text-muted);box-shadow:0 6px 18px rgba(16,32,53,.05);transition:transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease}
+.filter-btn:hover{transform:translateY(-1px);border-color:rgba(24,95,165,.22)}
+.filter-btn.on{background:rgba(24,95,165,.08);color:var(--text);border-color:rgba(24,95,165,.22)}
+.project-card,.rec-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 18px 16px;margin-bottom:14px;box-shadow:var(--shadow-soft);backdrop-filter:blur(10px)}
+.project-card{transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease}
+.project-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:rgba(24,95,165,.18);background:var(--surface-strong)}
+.project-card.featured{border:1px solid var(--border-strong);background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(240,246,252,.90))}
+.card-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:.85rem}
+.card-num{width:38px;height:38px;border-radius:14px;background:linear-gradient(135deg, rgba(24,95,165,.12), rgba(29,158,117,.12));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--accent);flex-shrink:0;border:1px solid rgba(24,95,165,.12)}
+.card-title{font-size:16px;font-weight:800;line-height:1.35;letter-spacing:-.02em}
+.card-subtitle{font-size:12px;color:var(--text-muted);margin-top:4px}
+.score-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:.85rem}
+.score-pill{font-size:11px;padding:5px 11px;border-radius:999px;font-weight:700;letter-spacing:-.01em}
+.s-inn{background:#EEEDFE;color:#3C3489}.s-res{background:#E1F5EE;color:#085041}.s-plc{background:#E6F1FB;color:#0C447C}.s-sta{background:#FAEEDA;color:#633806}.s-dif{background:#F1EFE8;color:#444441}.s-cost{background:#FCEBEB;color:#791F1F}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px}
+.detail-item{background:rgba(255,255,255,.72);border-radius:14px;padding:10px 11px;border:1px solid rgba(20,36,58,.06)}
+.detail-label{color:var(--text-muted);margin-bottom:4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.detail-val{color:var(--text);line-height:1.55}
+.expand-btn{font-size:12px;color:var(--accent);border:none;background:none;cursor:pointer;padding:0;margin-top:.6rem;display:flex;align-items:center;gap:6px;font-weight:700}
+.extra{display:none;margin-top:.9rem;border-top:1px solid rgba(20,36,58,.08);padding-top:.9rem}
+.extra.open{display:block}
+.extra-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin-top:.5rem}
+.rank-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-soft)}
+.rank-table th{text-align:left;padding:14px 14px;border-bottom:1px solid rgba(20,36,58,.08);color:var(--text-muted);font-weight:800;font-size:12px;background:rgba(255,255,255,.72);position:sticky;top:88px;backdrop-filter:blur(8px)}
+.rank-table td{padding:13px 14px;border-bottom:1px solid rgba(20,36,58,.06);vertical-align:top;background:rgba(255,255,255,.62)}
+.rank-table tr:hover td{background:rgba(24,95,165,.03)}
+.rank-table tr:last-child td{border-bottom:none}
+.rank-badge{display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.r1{background:#FAC775;color:#412402}.r2{background:#D3D1C7;color:#2C2C2A}.r3{background:#F0997B;color:#4A1B0C}.rn{background:rgba(24,95,165,.08);color:var(--accent)}
+.rec-box{padding:18px}
+.panel-voice{display:flex;gap:12px;margin-bottom:.9rem;font-size:13px;line-height:1.7;color:var(--text)}
+.avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+.av-ieee{background:#EEEDFE;color:#3C3489}.av-rob{background:#E1F5EE;color:#085041}.av-ai{background:#E6F1FB;color:#0C447C}.av-start{background:#FAEEDA;color:#633806}.av-rec{background:#FAECE7;color:#993C1D}
+.top-badge{display:inline-flex;align-items:center;font-size:10px;padding:3px 8px;border-radius:999px;background:#E6F1FB;color:#0C447C;margin-left:8px;vertical-align:middle;font-weight:800;letter-spacing:.03em}
+.rec-hero{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}
+.rec-score{font-size:12px;color:var(--text-muted)}
+.cta-btn{margin-top:.5rem;padding:11px 14px;border:none;border-radius:14px;background:linear-gradient(135deg, var(--accent), #2a78c5);color:#fff;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 12px 24px rgba(24,95,165,.25);transition:transform .18s ease, box-shadow .18s ease}
+.cta-btn:hover{transform:translateY(-1px);box-shadow:0 16px 28px rgba(24,95,165,.28)}
+.table-wrap{overflow-x:auto;border-radius:20px}
+.bar{height:6px;border-radius:3px;background:#B5D4F4;display:inline-block;vertical-align:middle}.bar-fill{height:6px;border-radius:3px;background:#185FA5;display:inline-block}
+@media (max-width: 900px){
+  .stats-row,.detail-grid,.extra-grid{grid-template-columns:1fr}
+  .hero{padding:22px 18px}
+  .tab-bar{position:static}
+  .rank-table th{top:auto}
+}
+@media (max-width: 640px){
+  .page-shell{padding:18px 12px 28px}
+  .hero-meta,.toolbar,.filter-row{align-items:stretch}
+  .search-input{width:100%}
+  .project-card,.rec-box{padding:16px 14px}
+  .card-header{gap:10px}
+  .score-row{gap:6px}
+  .tab{flex:1 1 auto;text-align:center}
+}
+</style>
+
+<div class="page-shell">
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="hero-meta">
+        <span class="meta-pill"><span class="meta-dot"></span> Final-year project ideas panel</span>
+        <span class="meta-pill">50 curated ideas</span>
+        <span class="meta-pill">IEEE · Robotics · AI · Startup · Placement</span>
+      </div>
+      <h2>Final-year project ideas — panel evaluation</h2>
+      <p>50 curated ideas evaluated by an IEEE reviewer, robotics engineer, AI researcher, startup founder, and technical recruiter. The interface now emphasizes hierarchy, faster scanning, and a cleaner reading rhythm for long-form project comparisons.</p>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-value">50</div><div class="stat-label">Projects in the panel set</div></div>
+        <div class="stat-card"><div class="stat-value">10</div><div class="stat-label">Projects in each ranked shortlist</div></div>
+        <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">Review lenses used for scoring</div></div>
+        <div class="stat-card"><div class="stat-value">1</div><div class="stat-label">Recommended project for most students</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="showTab('all')">All 50 projects</button>
+    <button class="tab" onclick="showTab('top10')">Top 10 overall</button>
+    <button class="tab" onclick="showTab('placement')">Top 10 placement</button>
+    <button class="tab" onclick="showTab('ieee')">Top 10 IEEE</button>
+    <button class="tab" onclick="showTab('startup')">Top 10 startup</button>
+    <button class="tab" onclick="showTab('recommend')">Panel recommendation</button>
+  </div>
+
+  <div class="section active" id="sec-all">
+    <div class="toolbar">
+      <input class="search-input" placeholder="Search projects..." oninput="filterCards(this.value)" id="search-box" />
+      <div class="filter-row">
+        <button class="filter-btn on" onclick="setDif('all',this)">All</button>
+        <button class="filter-btn" onclick="setDif('Medium',this)">Medium</button>
+        <button class="filter-btn" onclick="setDif('Hard',this)">Hard</button>
+        <button class="filter-btn" onclick="setDif('Very Hard',this)">Very Hard</button>
+      </div>
+    </div>
+    <div id="cards-container"></div>
+  </div>
+
+  <div class="section" id="sec-top10">
+    <div class="table-wrap"><table class="rank-table" id="top10-table"></table></div>
+  </div>
+  <div class="section" id="sec-placement">
+    <div class="table-wrap"><table class="rank-table" id="placement-table"></table></div>
+  </div>
+  <div class="section" id="sec-ieee">
+    <div class="table-wrap"><table class="rank-table" id="ieee-table"></table></div>
+  </div>
+  <div class="section" id="sec-startup">
+    <div class="table-wrap"><table class="rank-table" id="startup-table"></table></div>
+  </div>
+  <div class="section" id="sec-recommend">
+    <div id="rec-content"></div>
+  </div>
+</div>
+
+<script>
+const P=[
+{id:1,title:"Autonomous Pothole Detection & Geo-Mapping Drone",problem:"Road authorities lack real-time, GPS-tagged pothole severity maps; manual surveys are slow and dangerous.",users:"Municipal corporations, road agencies, smart city platforms",inn:9,res:8,plc:9,sta:8,dif:"Hard",cost:"₹18,000–28,000",hw:"DJI Tello / custom quadcopter, Raspberry Pi 4, RPLiDAR, OAK-D camera",sw:"ROS2, OpenCV, YOLOv8, QGIS, FastAPI, React dashboard",ai:"YOLOv8 object detection, depth estimation, severity regression CNN",rob:"Quadcopter frame, ESCs, flight controller (Pixhawk), GPS module",novel:"Fusing aerial RGB + depth for pothole volume estimation; severity scoring model trained on Indian road data",paper:"Edge AI-based road surface assessment using UAV-mounted stereo vision and CNN severity scoring",future:"Integration with smart city APIs, predictive maintenance scheduling, real-time traffic rerouting",recruit:"Combines robotics, Edge AI, computer vision, real-world deployment — rare combo for a student project"},
+
+{id:2,title:"Sign Language to Speech Real-Time Translator (Edge AI Glove + CV Fusion)",problem:"250 million deaf/mute people globally struggle to communicate with non-signers; existing tools are slow or phone-dependent.",users:"Deaf/mute individuals, hospitals, schools, courts",inn:9,res:9,plc:9,sta:9,dif:"Hard",cost:"₹8,000–14,000",hw:"Flex sensors (x5), MPU-6050 IMU, ESP32, OAK-D Lite camera, speaker module",sw:"MediaPipe Holistic, TensorFlow Lite, Flutter, MQTT",ai:"Transformer-based gesture classifier, LSTM sequence model, TTS (Coqui TTS)",rob:"Sensor glove with BLE, embedded inferencing on ESP32",novel:"Multi-modal fusion of glove sensor data + CV skeletal pose for disambiguation; Indian Sign Language dataset creation",paper:"Multi-modal ISL recognition using wearable IMU fusion and MediaPipe holistic keypoints",future:"Bidirectional speech-to-sign avatar, low-cost mass production, government disability scheme tie-in",recruit:"Accessibility AI, wearables, embedded ML, Edge AI — strong narrative for Google, Microsoft, Samsung"},
+
+{id:3,title:"AI-Powered Precision Weed Detection Robot for Small Farms",problem:"Manual weeding costs Indian small farmers 30–40% of labour expense; chemical herbicides harm soil health.",users:"Small and marginal farmers, agri-tech startups, FPOs",inn:8,res:8,plc:8,sta:9,dif:"Hard",cost:"₹25,000–40,000",hw:"Raspberry Pi 5, OAK-D camera, Jetson Nano, servo-actuated sprayer, wheel chassis",sw:"ROS2, YOLOv8-seg, OpenCV, MQTT, Grafana",ai:"YOLOv8 instance segmentation (crop vs weed), soil moisture fusion",rob:"Differential drive chassis, servo sprayer head, ultrasonic obstacle avoidance",novel:"Crop-agnostic weed segmentation at row level; targeted micro-spray reduces chemical use by ~85%",paper:"Precision herbicide application via real-time weed instance segmentation on low-cost edge platforms",future:"Multi-crop model, GPS row navigation, integration with Kisan app APIs",recruit:"AgriTech is a ₹70k Cr market — recruiters at Intello Labs, CropIn, John Deere love this"},
+
+{id:4,title:"Elderly Fall Detection & Prevention Wearable with Predictive Gait Analysis",problem:"Falls are the leading cause of injury death in adults 65+; reactive alerts arrive too late to prevent the fall.",users:"Elderly patients, caregivers, hospitals, insurance companies",inn:9,res:9,plc:9,sta:8,dif:"Hard",cost:"₹6,000–12,000",hw:"MPU-9250 IMU, MAX30102 pulse ox, ESP32-S3, OLED, BLE beacon",sw:"TensorFlow Lite, Edge Impulse, React Native, Firebase",ai:"LSTM fall predictor trained on gait patterns, anomaly detection on accelerometer data",rob:"Wrist/ankle wearable form factor",novel:"Pre-fall gait anomaly prediction (not just post-fall detection); personalized baseline calibration per user",paper:"Pre-fall prediction using LSTM-based gait anomaly detection on IMU wearables with personalised baselines",future:"Integration with hospital EMR, smart home actuators (auto-lock, floor lighting), insurance premium linking",recruit:"HealthTech + embedded ML + Edge AI — valued by Apple, Fitbit, Philips, Siemens Healthineers"},
+
+{id:5,title:"Real-Time Driver Drowsiness & Distraction Detection System for Commercial Vehicles",problem:"NHAI data: 30% of Indian highway accidents involve driver fatigue; most trucks lack DMS (driver monitoring systems).",users:"Logistics companies, trucking fleets, insurance firms",inn:8,res:8,plc:9,sta:9,dif:"Medium",cost:"₹5,000–10,000",hw:"Raspberry Pi 4, OAK-D camera, buzzer, GPS module, 4G dongle",sw:"MediaPipe FaceMesh, TensorFlow Lite, OpenCV, MQTT, Django REST",ai:"PERCLOS eye-closure model, head-pose estimation, yawn detection CNN",rob:"In-cab camera mount with IR illumination",novel:"Multi-cue fusion (PERCLOS + head pose + yawn + micro-sleep) with fleet-level fatigue pattern analytics",paper:"Multi-modal driver fatigue detection using facial landmark fusion and edge deployment for commercial fleets",future:"Integration with Ola/Uber fleet APIs, insurance telematics, automatic speed limiter actuation",recruit:"Computer vision + safety AI + fleet IoT — strong for Mobileye, Continental, Bosch, TCS iON"},
+
+{id:6,title:"Autonomous Inventory Robot for Warehouses using SLAM + RFID Fusion",problem:"E-commerce warehouse inventory counting takes 12–48 hours manually; errors cause stockouts and overstock costs.",users:"E-commerce warehouses, cold storage, pharmaceutical stores",inn:9,res:8,plc:9,sta:9,dif:"Very Hard",cost:"₹35,000–55,000",hw:"Jetson Nano, RPLiDAR A1, OAK-D, RFID reader, mecanum wheel chassis",sw:"ROS2, GMapping/Cartographer, FastAPI, PostgreSQL, React",ai:"SLAM-based mapping, YOLOv8 barcode/label detection, RFID data fusion",rob:"Mecanum-wheel omnidirectional base, RFID antenna mount, LiDAR",novel:"Sensor fusion of LiDAR SLAM + RFID read zones for sub-meter shelf-level inventory localisation",paper:"Autonomous inventory reconciliation via RFID-LiDAR fusion SLAM in unstructured warehouse environments",future:"AMR fleet coordination, integration with SAP/Oracle WMS, pick-and-place extension",recruit:"Robotics process automation — Amazon Robotics, Addverb, GreyOrange actively hire for this"},
+
+{id:7,title:"AI Dermatology Assistant for Rural Primary Health Centres",problem:"India has 1 dermatologist per 1.5 lakh people; rural PHCs have zero skin disease diagnosis capability.",users:"Rural PHC doctors, ASHA workers, patients in Tier 3+ cities",inn:8,res:9,plc:8,sta:9,dif:"Hard",cost:"₹4,000–8,000",hw:"Raspberry Pi 4 / Android phone, macro lens attachment, LED ring light",sw:"TensorFlow Lite, FastAPI, Flutter, Firebase",ai:"EfficientNetV2 trained on ISIC + custom Indian skin tone dataset; Grad-CAM explainability",rob:"None required",novel:"Bias-corrected skin disease classifier for Fitzpatrick IV–VI skin tones (underrepresented in existing datasets)",paper:"Skin lesion classification for darker skin tones using domain-adapted CNN with Grad-CAM explainability",future:"PM-JAY integration, telemedicine referral loop, WHO partnership for low-income countries",recruit:"HealthAI + ethical AI + real deployment story — top signal for Google Health, Niramai, Microsoft Research"},
+
+{id:8,title:"Structural Health Monitoring of Bridges using IoT Vibration Sensors + ML",problem:"India has 1.72 lakh bridges; 25% are rated distressed. Manual inspection is infrequent and misses early failure signs.",users:"NHAI, PWD, smart city departments, infrastructure consultants",inn:8,res:9,plc:8,sta:8,dif:"Hard",cost:"₹12,000–20,000",hw:"ADXL345 accelerometers, ESP32, LoRa modules, edge gateway (RPi4), solar panel",sw:"InfluxDB, Grafana, TensorFlow, FastAPI, AWS IoT Core",ai:"FFT + LSTM anomaly detection on vibration spectral features, damage localization CNN",rob:"None required",novel:"Edge anomaly alerting with spectral feature drift detection; modal frequency shift as early failure predictor",paper:"Bridge structural health monitoring via distributed MEMS accelerometer IoT network with LSTM anomaly detection",future:"Digital twin integration, drone inspection fusion, Ayushman Bharat Smart City API tie-in",recruit:"Industrial IoT + ML + safety-critical systems — L&T, TATA Projects, Honeywell, IBM"},
+
+{id:9,title:"Adaptive Robotic Exoskeleton Glove for Post-Stroke Hand Rehabilitation",problem:"70% of stroke survivors have hand motor impairment; therapy robots cost ₹50+ lakhs and require clinical settings.",users:"Post-stroke patients, physiotherapists, rehabilitation hospitals",inn:10,res:10,plc:9,sta:8,dif:"Very Hard",cost:"₹20,000–35,000",hw:"Servo motors (x5), flex sensors, Arduino Mega, EMG sensor, 3D printed exoskeleton",sw:"OpenCV, TensorFlow, BLE app, MATLAB Simulink",ai:"EMG signal classifier (SVM/CNN), reinforcement learning for adaptive resistance control",rob:"5-DOF exoskeleton mechanism, servo-PWM control, force feedback",novel:"Intent prediction from sub-threshold EMG signals to trigger assisted movement before full contraction",paper:"EMG-intent-driven adaptive exoskeleton glove for post-stroke hand rehabilitation using RL-based resistance control",future:"Clinical trials, full-arm exoskeleton, gamified therapy app integration",recruit:"Med-tech robotics — one of the rarest and most impressive student projects possible; HCL, GE Healthcare, Siemens"},
+
+{id:10,title:"AI-Powered Mosquito Breeding Site Detection via Satellite + Street-Level Image Fusion",problem:"Manual dengue/malaria surveillance covers <5% of urban areas; outbreaks are detected weeks after breeding starts.",users:"Municipal health departments, WHO, smart city platforms",inn:9,res:9,plc:8,sta:7,dif:"Hard",cost:"₹3,000–6,000 (software-heavy)",hw:"Raspberry Pi / cloud GPU, optional drone cam",sw:"Sentinel-2 satellite imagery, PyTorch, FastAPI, Leaflet.js",ai:"U-Net semantic segmentation for water body detection, ResNet stagnant water classifier",paper:"Multi-source image fusion for urban mosquito breeding site surveillance using satellite and street-level CNN models",novel:"Temporal NDWI change detection fused with street-level classification for block-level outbreak risk scoring",future:"Integration with BBMP/MCD health portals, early warning API for hospitals",recruit:"Geospatial AI + public health — Google, HERE, Esri India, public sector AI roles"},
+
+{id:11,title:"Low-Cost Robotic Prosthetic Hand with EMG Control and Tactile Feedback",problem:"Prosthetic hands cost ₹3–25 lakhs; 90% of Indian upper-limb amputees go without a prosthetic.",users:"Amputees (esp. industrial accident victims), rehabilitation NGOs",inn:9,res:9,plc:9,sta:9,dif:"Very Hard",cost:"₹8,000–15,000",hw:"Myoware EMG sensors, servo motors, 3D printed hand, Arduino, FSR sensors",sw:"Edge Impulse, TensorFlow Lite, BLE mobile app",ai:"SVM / 1D-CNN for EMG gesture classification, calibration pipeline",rob:"3D-printed 5-finger mechanism, wrist rotation DOF, FSR tactile feedback loop",novel:"Low-cost (sub-₹15k) closed-loop EMG prosthetic with tactile vibration feedback",paper:"Low-cost EMG-driven prosthetic hand with closed-loop tactile feedback for amputee rehabilitation",future:"Silicone cosmetic covering, neural interface integration, mass production via NGO partnership",recruit:"Biomedical robotics — extremely rare at undergrad level; Google ATAP, Unlimited Tomorrow, TATA"},
+
+{id:12,title:"Autonomous Last-Mile Delivery Robot for College/Hospital Campuses",problem:"Internal campus delivery (food, medicine, documents) wastes staff time; COVID highlighted contactless delivery needs.",users:"Hospital campuses, university campuses, corporate offices",inn:8,res:7,plc:9,sta:8,dif:"Hard",cost:"₹22,000–38,000",hw:"Jetson Nano, RPLiDAR, OAK-D, differential drive base, QR scanner",sw:"ROS2, Nav2, FastAPI, Flutter delivery app",ai:"YOLOv8 person/obstacle detection, A* + DWA local planner",rob:"Differential drive chassis, suspension, compartment with servo lock",novel:"Adaptive social navigation — yields to pedestrians, navigates crowded corridors using predicted motion",paper:"Autonomous campus delivery robot with social-aware navigation in dynamic pedestrian environments",future:"Fleet management, elevator integration, drone-to-ground handoff",recruit:"Autonomous mobile robotics — Amazon, Swiggy Instamart, Ola Electric robotics teams"},
+
+{id:13,title:"Real-Time Air Quality Hyper-Local Mapping with Mobile Sensor Nodes",problem:"CPCB has only 1 monitoring station per 3 million people; localised pollution hotspots are invisible to policy makers.",users:"Smart city departments, environmental NGOs, urban planners",inn:8,res:8,plc:7,sta:7,dif:"Medium",cost:"₹8,000–16,000",hw:"SDS011 PM sensor, MQ-135, GPS, ESP32, solar power, OLED",sw:"InfluxDB, Grafana, Leaflet.js, Python, MQTT",ai:"Kriging spatial interpolation, LSTM pollution forecasting",rob:"Optional bike/scooter mount form factor",novel:"Spatiotemporal kriging interpolation from sparse mobile nodes to generate 50m-resolution city pollution maps",paper:"Hyper-local urban air quality mapping using mobile IoT sensor networks with spatiotemporal kriging",future:"Integration with CPCB API, real estate valuation models, school route safety scoring",recruit:"Environmental AI + IoT + geospatial — Ola, Bosch, Siemens, UN Environment Programme"},
+
+{id:14,title:"AI Legal Document Summariser & Clause Risk Flagging Tool for MSMEs",problem:"75% of Indian MSMEs sign vendor contracts without legal review; hidden clauses cause crores in disputes annually.",users:"MSME owners, freelancers, small law firms",inn:8,res:7,plc:8,sta:9,dif:"Medium",cost:"₹500–2,000 (API costs)",hw:"Standard laptop / cloud",sw:"LangChain, Claude/GPT-4 API, spaCy, React, FastAPI, PostgreSQL",ai:"LLM clause extraction, fine-tuned NER for legal entities, risk-level classifier",rob:"None",novel:"Domain-specific risk taxonomy for Indian contract law; RAG pipeline over Indian Contract Act + case law",paper:"LLM-based automated clause risk detection in Indian commercial contracts using retrieval-augmented generation",future:"Vernacular language support, court filing auto-generation, SaaS for CA firms",recruit:"LLM engineering + legal tech — Navi, Juspay, Spice Route Legal, Goldman Sachs tech"},
+
+{id:15,title:"Vision-Based Autonomous Greenhouse Environment Control System",problem:"Manual greenhouse management leads to 20–40% yield loss due to sub-optimal light, temp, humidity, and irrigation.",users:"Protected cultivation farmers, agri-research stations, export floriculture farms",inn:8,res:8,plc:8,sta:8,dif:"Hard",cost:"₹15,000–25,000",hw:"Raspberry Pi 4, DHT22, CO2 sensor, OAK-D, grow lights, relay board, water pump",sw:"OpenCV, TensorFlow, MQTT, Node-RED, Grafana",ai:"Plant health classifier (leaf color analysis), disease early detection CNN, RL-based climate control",rob:"Automated relay actuators, servo-based vent control",novel:"Closed-loop plant phenotyping for autonomous environment optimisation without fixed schedules",paper:"Closed-loop autonomous greenhouse management via plant phenotype feedback and reinforcement learning",future:"Multi-crop model, integration with APMC market APIs for harvest timing optimisation",recruit:"AgriTech automation — Mahindra Agri, Netafim, Rivulis, Jain Irrigation"},
+
+{id:16,title:"Neuro-Symbolic Explainable Traffic Signal Control using Federated RL",problem:"Static traffic signals waste 30–40% of commuter time; existing adaptive systems cost ₹50+ lakhs per junction.",users:"Municipal corporations, traffic police, smart city SPVs",inn:10,res:10,plc:8,sta:7,dif:"Very Hard",cost:"₹10,000–18,000 (mostly software/simulation)",hw:"Raspberry Pi, camera, optional Arduino for signal actuation",sw:"SUMO traffic simulator, PyTorch, Flower (federated learning), FastAPI",ai:"Deep RL (PPO/DQN) for signal timing, neuro-symbolic rules for safety constraints, federated learning across junctions",rob:"Optional signal actuation via relay",novel:"Neuro-symbolic safety layer over RL policy; federated training across junctions without sharing raw video",paper:"Federated neuro-symbolic reinforcement learning for privacy-preserving adaptive traffic signal control",future:"City-wide deployment, integration with ANPR cameras, ambulance priority corridor",recruit:"Deep RL + federated learning + real infrastructure — extremely attractive to Google DeepMind, ISRO, smart city firms"},
+
+{id:17,title:"Tactile-Sensing Robotic Gripper for Fragile Object Handling",problem:"Industrial pick-and-place robots damage fragile objects (fruits, electronics) due to lack of tactile feedback.",users:"Food processing, electronics assembly, pharmaceutical packing",inn:9,res:9,plc:9,sta:8,dif:"Very Hard",cost:"₹18,000–32,000",hw:"Velostat / FSR tactile sensors, 3D printed gripper, servo motors, Arduino, Raspberry Pi",sw:"ROS2, TensorFlow, Python, OpenCV",ai:"Slip detection CNN on tactile sensor array, adaptive grasp controller with RL",rob:"Multi-fingered gripper with compliant joints, tactile sensor array, force-torque inference",novel:"Low-cost Velostat tactile array replacing expensive commercial tactile skins; slip prediction before occurrence",paper:"Slip prediction and adaptive grasping in a low-cost tactile robotic gripper using CNN and reinforcement control",future:"Integration with ABB/KUKA robot arms, food-safe material iteration, pharmaceutical compliance",recruit:"Robotic manipulation — extremely high value at ABB, Fanuc, Mujin, Siemens Factory Automation"},
+
+{id:18,title:"AI-Powered Visual Inspection System for PCB Defect Detection",problem:"Manual PCB inspection is 78% accurate and a bottleneck in Indian electronics manufacturing.",users:"PCB manufacturers, EMS companies, defence electronics",inn:8,res:8,plc:9,sta:8,dif:"Medium",cost:"₹8,000–14,000",hw:"Raspberry Pi 4, OAK-D / USB3 camera, programmable LED ring, linear guide rail",sw:"OpenCV, YOLOv8, FastAPI, React dashboard",ai:"YOLOv8 defect detection (solder bridge, missing component, lifted pad), few-shot learning for new defect types",rob:"Linear slide for consistent imaging height",novel:"Few-shot adaptation to new component types without full retraining; uncertainty-aware defect reporting",paper:"Few-shot PCB defect detection with uncertainty quantification using YOLOv8 and prototype networks",future:"3D AOI integration, integration with Gerber design files for self-calibration",recruit:"Quality AI + manufacturing — semiconductor firms, Dixon Technologies, Tata Elxsi, Bosch Rexroth"},
+
+{id:19,title:"Swarm Robotics for Search and Rescue in Collapsed Buildings",problem:"Post-earthquake search operations in rubble are slow and endanger rescuers; small robots can reach inaccessible voids.",users:"NDRF, SDRF, urban search and rescue teams",inn:10,res:10,plc:9,sta:7,dif:"Very Hard",cost:"₹30,000–50,000",hw:"3x custom mini-robots (RPi Zero 2, IR sensor, gas sensor, camera), XBee radio mesh",sw:"ROS2, multi-agent RL (RLlib), OpenCV, MQTT",ai:"Multi-agent RL for swarm coordination, victim detection CNN, gas concentration mapping",rob:"Compact differential drive bots, mesh networking, gas/thermal sensors",novel:"Decentralised swarm with stigmergic coordination (pheromone-inspired waypoints) and victim localisation fusion",paper:"Decentralised swarm robotics for victim localisation in post-disaster rubble using stigmergic multi-agent RL",future:"Aerial-ground swarm hybrid, NDRF integration, DRDO collaboration potential",recruit:"Multi-agent systems + disaster robotics — IISc, DRDO, Boston Dynamics research arms, ISRO"},
+
+{id:20,title:"On-Device Multilingual Voice Assistant for Offline Rural Health Workers",problem:"ASHA workers operate in zero-connectivity areas; digital health tools require internet, leaving them with paper records.",users:"ASHA workers, ANMs, rural PHC staff",inn:9,res:9,plc:8,sta:8,dif:"Hard",cost:"₹5,000–10,000",hw:"Raspberry Pi 4 / Android, microphone, speaker",sw:"Whisper (local), LLaMA / Phi-3 (on-device), FastAPI, SQLite",ai:"Whisper STT (4-bit quantised), SLM for clinical Q&A, multi-lingual NLP (Hindi, Tamil, Telugu)",rob:"None",novel:"Full offline multilingual clinical assistant on sub-₹5k hardware; quantised SLM with domain fine-tuning on ASHA protocols",paper:"On-device multilingual clinical assistant for offline rural health workers using quantised small language models",future:"PM-eHealth integration, vernacular language expansion, ABDM API tie-in",recruit:"On-device AI + NLP + healthcare — Microsoft, Google, Haptik, Jio Health"},
+
+{id:21,title:"Autonomous Solar Panel Cleaning Robot",problem:"Dust accumulation on solar panels reduces efficiency by 20–35% in Indian conditions; manual cleaning is expensive and dangerous.",users:"Utility-scale solar farms, rooftop solar installers, DISCOMS",inn:7,res:7,plc:8,sta:9,dif:"Hard",cost:"₹20,000–35,000",hw:"Raspberry Pi, brush motor, water pump, ultrasonic sensors, encoder motors, rail system",sw:"ROS, OpenCV, MQTT",ai:"Soiling detection CNN, cleaning schedule optimiser (RL)",rob:"Rail-guided or magnetic-wheel chassis, rotating brush assembly",novel:"Soiling level estimation via camera for on-demand (not scheduled) cleaning; dry-cleaning mode for water-scarce areas",paper:"Autonomous solar panel maintenance robot with vision-based soiling quantification and adaptive cleaning strategy",future:"Fleet robots, integration with SCADA, drone inspection combo",recruit:"Renewable energy + robotics — NTPC, Adani Green, SunPower, First Solar"},
+
+{id:22,title:"Cognitive Load Detection System for Pilots and Surgeons using Physiological Signals",problem:"Pilot and surgeon cognitive overload causes catastrophic errors; no real-time monitoring system exists in Indian contexts.",users:"Aviation training institutes, surgical simulation centres, defence",inn:10,res:10,plc:9,sta:7,dif:"Very Hard",cost:"₹8,000–15,000",hw:"EEG headset (Muse/OpenBCI), eye tracker, GSR sensor, ECG module",sw:"MNE-Python, PyTorch, TensorFlow, BrainFlow API",ai:"Multi-modal physiological signal fusion CNN-LSTM, workload classification (NASA-TLX correlation)",rob:"None required",novel:"Real-time cognitive state classification from EEG + GSR + eye gaze fusion in dynamic task conditions",paper:"Real-time cognitive load estimation for safety-critical operators using multi-modal physiological signal fusion",future:"Adaptive autopilot handoff trigger, surgical mentor alerts, pilot training certification tool",recruit:"NeuroAI + safety systems — ISRO, HAL, Intuitive Surgical research labs"},
+
+{id:23,title:"AI-Powered Lip Reading System for Silent Speech Communication",problem:"People in noisy environments (factory floors, space suits, call-centres) cannot communicate verbally; lip reading AI can fill the gap.",users:"Manufacturing workers, hearing impaired, military, remote operators",inn:9,res:9,plc:8,sta:8,dif:"Very Hard",cost:"₹6,000–12,000",hw:"OAK-D camera, Jetson Nano, speaker/BT output",sw:"MediaPipe, PyTorch, Transformer seq2seq, TTS",ai:"Lip landmark extraction + Transformer-based visual speech recognition, CTC-loss sequence decoding",rob:"Wearable form factor (optional)",novel:"Cross-lingual visual speech recognition supporting Indian language phoneme sets",paper:"Visual speech recognition for Indian languages using lip landmark transformers and CTC decoding",future:"Glasses-integrated form factor, multilingual expansion, silent phone call feature",recruit:"Computer vision + NLP + accessibility — Apple, Meta Reality Labs, Microsoft Accessibility"},
+
+{id:24,title:"Robotic Arm for Precise Drug Dispensing in Hospital Pharmacies",problem:"Manual pharmacy dispensing causes ~1.5 million medication errors annually in India; robotic dispensers cost ₹50+ lakhs.",users:"Hospital pharmacies, retail pharmacy chains, blood banks",inn:8,res:7,plc:9,sta:9,dif:"Hard",cost:"₹25,000–40,000",hw:"6-DOF robotic arm kit, Arduino, barcode scanner, OAK-D, servo gripper",sw:"ROS2, MoveIt2, OpenCV, FastAPI, Django",ai:"Barcode/label OCR, dosage verification classifier, pick planning with MoveIt2",rob:"6-DOF arm, end-effector gripper, conveyor integration",novel:"Low-cost pharmacy dispensing robot that cross-checks drug label with prescription using LLM-OCR fusion",paper:"Low-cost prescription-verified robotic pharmacy dispensing using LLM-OCR fusion and MoveIt2 motion planning",future:"Cold chain drug handling, blood bag handling, integration with hospital HIS",recruit:"Medical robotics + ROS + MoveIt — Omnicell, Swisslog, HCL Healthcare, Apollo Hospitals tech division"},
+
+{id:25,title:"Edge AI Wildlife Poaching Alert System in Forest Reserve",problem:"Forest departments have 1 guard per 5 sq.km; poaching and human-wildlife conflict goes undetected for hours.",users:"Forest departments, wildlife NGOs, Tiger Reserve management",inn:9,res:9,plc:8,sta:7,dif:"Hard",cost:"₹15,000–25,000",hw:"RPi 4, OAK-D, passive infrared, audio sensor (gunshot detection), LoRa, solar",sw:"YOLOv8, TensorFlow Lite, MQTT, Node-RED, WhatsApp/Telegram alert bot",ai:"YOLOv8 species identification, gunshot sound event detection CNN, human intrusion classifier",rob:"Solar-powered autonomous camera trap node",novel:"Acoustic-visual fusion for simultaneous human intrusion + gunshot + species detection on a single solar node",paper:"Solar-powered edge AI wildlife monitoring: acoustic-visual fusion for poaching detection in remote forest reserves",future:"Elephant corridor conflict maps, drone auto-dispatch on alert, WII/NTCA partnership",recruit:"Edge AI + conservation tech + IoT — WWF Tech, Wildlife Institute of India, Microsoft AI for Earth"},
+
+{id:26,title:"Automated Crop Yield Prediction using Satellite NDVI + Soil IoT Fusion",problem:"Kisan Credit Card NPAs are partly caused by inaccurate yield estimation; banks and insurers lack ground-truth data.",users:"Agri-insurance companies, banks, state agriculture departments",inn:8,res:8,plc:8,sta:8,dif:"Hard",cost:"₹8,000–15,000",hw:"Soil NPK sensor, moisture sensor, ESP32, GPS, solar",sw:"Sentinel-2 (NDVI), Google Earth Engine, PyTorch, FastAPI",ai:"NDVI time-series LSTM + soil sensor fusion regressor for yield prediction",rob:"None",novel:"District-level yield prediction fusing multi-temporal satellite NDVI with point IoT soil measurements",paper:"Crop yield forecasting via temporal NDVI-soil sensor fusion using LSTM regression for smallholder farms",future:"Crop insurance premium automation, Kisan app integration, commodity price hedging tool",recruit:"Geospatial AI + FinTech + AgriTech — HDFC Ergo Agri, Fasal, WayCool, ICICI Lombard"},
+
+{id:27,title:"Real-Time Deepfake Detection System for Video Calls",problem:"Deepfake-based financial fraud costs India ₹1,200 Cr+ annually; existing detectors work only on recorded video.",users:"Banks, KYC platforms, video conferencing apps, courts",inn:9,res:9,plc:9,sta:9,dif:"Hard",cost:"₹2,000–5,000",hw:"Standard laptop GPU / cloud API",sw:"PyTorch, EfficientNet, MediaPipe, FastAPI, WebRTC plugin",ai:"EfficientNet-based binary deepfake classifier, spatiotemporal inconsistency detector, face flow analysis",rob:"None",novel:"Stream-level detection (not clip-level) with <100ms latency for real-time video call use; blinking/micro-expression liveness",paper:"Real-time stream-level deepfake detection for video KYC using spatiotemporal EfficientNet and liveness analysis",future:"Browser extension, integration with Zoom/Teams SDK, regulatory compliance product for RBI mandates",recruit:"Security AI + fintech + computer vision — Razorpay, CRED, Juspay, PhonePe, NPCI"},
+
+{id:28,title:"Autonomous Navigation Boat for River Water Quality Monitoring",problem:"River pollution monitoring relies on manual sampling from fixed points; pollution plumes go undetected between stations.",users:"State Pollution Control Boards, NMCG (Ganga Mission), waterway authorities",inn:9,res:9,plc:8,sta:7,dif:"Very Hard",cost:"₹25,000–45,000",hw:"Custom boat hull, Pixhawk, GPS, turbidity/pH/DO sensors, Raspberry Pi, LiDAR for obstacle avoid",sw:"ArduPilot, ROS2, FastAPI, Grafana, QGIS",ai:"Pollution plume tracking (Gaussian dispersion model + GP regression), sensor anomaly detection",rob:"Autonomous surface vehicle (ASV), multi-sensor buoy payload",novel:"Informative path planning — boat autonomously navigates toward pollution gradient peaks",paper:"Informative path planning for autonomous river water quality monitoring using Gaussian process gradient ascent",future:"Ganga/Yamuna deployment, NMCG partnership, CPCB data API integration",recruit:"Autonomous vehicles + environmental monitoring + ROS — ABB Marine, NMCG, DRDO Naval labs"},
+
+{id:29,title:"AI-Driven Personalised Learning Path Generator for Competitive Exam Preparation",problem:"Coaching for JEE/NEET costs ₹2–5 lakhs; students in Tier 3 cities have zero access to adaptive learning.",users:"JEE/NEET aspirants, Tier 2–3 city students, ed-tech platforms",inn:7,res:7,plc:8,sta:9,dif:"Medium",cost:"₹1,000–3,000",hw:"Standard laptop / cloud",sw:"LangChain, React, FastAPI, PostgreSQL, Supabase",ai:"Knowledge graph-based gap analysis, LLM-powered question generation, Bayesian knowledge tracing",rob:"None",novel:"Bayesian knowledge tracing + LLM-generated adaptive question difficulty calibration for Indian syllabus",paper:"Bayesian knowledge tracing with LLM-enhanced adaptive content generation for competitive exam preparation",future:"Vernacular support, live doubt resolution, OMR sheet auto-grading module",recruit:"EdTech + LLM engineering — Byju's, PhysicsWallah, Unacademy, Vedantu tech teams"},
+
+{id:30,title:"Smart Blind Navigation Stick with Object Recognition & Spatial Audio",problem:"60% of India's 5 million blind people cannot afford sophisticated navigation aids; white canes provide no environmental context.",users:"Visually impaired individuals, blind schools, NGOs",inn:8,res:8,plc:8,sta:8,dif:"Hard",cost:"₹5,000–10,000",hw:"Raspberry Pi Zero 2W, OAK-D Lite, ultrasonic sensors, bone-conduction headphones, vibration motors",sw:"TensorFlow Lite, MediaPipe, eSpeak TTS",ai:"YOLOv8 object detection, depth estimation, spatial audio mapping, obstacle urgency classifier",rob:"Stick form factor with embedded compute",novel:"Spatial audio convolution to encode obstacle direction and distance without visual or tactile channel overload",paper:"Spatial audio obstacle encoding for blind pedestrian navigation using depth-fused object detection on edge devices",future:"Indoor wayfinding maps, bus number recognition, currency/product label reading",recruit:"Accessibility AI + edge AI + human-computer interaction — Microsoft, Google, TATA Trusts, Samarthyam"},
+
+{id:31,title:"Explainable AI for Credit Scoring of Thin-File Borrowers using Alternative Data",problem:"450 million Indians lack formal credit history; banks reject them despite having digital footprints showing creditworthiness.",users:"Microfinance institutions, NBFCs, cooperative banks",inn:8,res:8,plc:9,sta:9,dif:"Medium",cost:"₹500–2,000",hw:"Standard laptop / cloud",sw:"Python, XGBoost, SHAP, FastAPI, React, PostgreSQL",ai:"Gradient boosting credit model, SHAP explainability, fairness-aware de-biasing (AIF360)",rob:"None",novel:"Explainable fairness-aware credit model on alternative data (UPI transactions, utility bills) with RBI-compliant audit trail",paper:"Fairness-aware explainable credit scoring for thin-file borrowers using alternative data with SHAP audit reporting",future:"RBI Regulatory Sandbox entry, integration with Account Aggregator framework, NBFC SaaS product",recruit:"FinTech AI + MLOps + responsible AI — Perfios, Bureau, CRED, Juspay, CredAble"},
+
+{id:32,title:"Robotic Seed Sowing Machine with GPS Row Alignment for Small Holdings",problem:"Manual seed sowing is non-uniform and labour-intensive for the 86% of Indian farmers with <2 hectares of land.",users:"Small and marginal farmers, custom hiring centres",inn:7,res:7,plc:7,sta:8,dif:"Hard",cost:"₹20,000–35,000",hw:"Stepper motors, servo, GPS, Arduino Mega, ultrasonic sensors, tractor mount",sw:"Arduino, MATLAB, Python",ai:"Row-alignment PID controller, seed count verification CNN",rob:"Seed metering mechanism, GPS-guided steering actuator",novel:"Row-following GPS + vision fusion for sub-5cm sowing precision at 1/100th cost of commercial seeders",paper:"Low-cost GPS-vision fused robotic seed sowing system for smallholder precision agriculture",future:"Integration with soil sensor for variable-rate seeding, PMFBY insurance data feed",recruit:"AgriTech + embedded robotics — Mahindra Agri, CLAAS, CNH Industrial"},
+
+{id:33,title:"Edge AI-Based Neonatal Jaundice Detection via Smartphone Camera",problem:"Neonatal jaundice kills 100,000 newborns in India annually; transcutaneous bilirubinometers cost ₹50,000+.",users:"ASHA workers, government hospitals, rural ANMs",inn:9,res:9,plc:8,sta:8,dif:"Medium",cost:"₹1,000–3,000",hw:"Android smartphone, yellow card reference (for color calibration)",sw:"TensorFlow Lite, Flutter, Firebase",ai:"Scleral/skin color regression CNN for bilirubin prediction, color calibration pipeline",rob:"None",novel:"Device-agnostic scleral jaundice detection with ambient light compensation using a printed color reference card",paper:"Non-invasive neonatal jaundice screening using device-agnostic scleral colour regression with ambient light calibration",future:"Ministry of Health NHM integration, paediatric telemedicine referral loop, WHO validation study",recruit:"Medical AI + mobile health + healthcare equity — Niramai, Siemens Healthineers, PATH Foundation"},
+
+{id:34,title:"AI-Powered Supply Chain Disruption Predictor using Multi-Source Data Fusion",problem:"Indian MSMEs lose ₹1.2 lakh Cr annually to supply chain disruptions; most have zero advance warning.",users:"MSME manufacturers, logistics companies, procurement teams",inn:8,res:8,plc:9,sta:9,dif:"Hard",cost:"₹1,000–3,000",hw:"Standard laptop / cloud",sw:"PyTorch, Hugging Face, FastAPI, Apache Kafka, PostgreSQL, React",ai:"NLP news event classifier, LSTM demand forecasting, graph neural network for supplier dependency modelling",rob:"None",novel:"Multi-source disruption signal fusion: news NLP + commodity price + shipping delay API → risk score",paper:"Supply chain disruption prediction via multi-source heterogeneous signal fusion using GNN and NLP event detection",future:"Insurance product for supply chain risk, API for ERP integration (SAP, Oracle), climate risk overlay",recruit:"MLOps + NLP + supply chain AI — Maersk, DHL, Oracle SCM, Flipkart Supply Chain"},
+
+{id:35,title:"Computer Vision Pipeline for Surgical Instrument Tracking in Operation Theatres",problem:"Retained surgical instruments cause 1,500 deaths/year in India; manual counting has 94% accuracy.",users:"Tertiary hospitals, medical device companies, insurance firms",inn:9,res:10,plc:9,sta:8,dif:"Very Hard",cost:"₹10,000–20,000",hw:"OAK-D Pro, Raspberry Pi 4, RFID tags (backup), surgical tray reference",sw:"YOLOv8, ByteTrack, FastAPI, React dashboard",ai:"YOLOv8 instrument detection, ByteTrack multi-object tracking, inventory reconciliation logic",rob:"Camera positioning arm (optional)",novel:"Real-time spatiotemporal tracking of surgical instruments with pre/post-op count reconciliation and alert generation",paper:"Real-time surgical instrument tracking and inventory reconciliation using YOLOv8 and ByteTrack in operation theatres",future:"Integration with OT management software, sterile drape-compatible camera housing, ABDM compliance",recruit:"Medical computer vision + safety AI + healthcare — GE Healthcare, Stryker, Medtronic, Johnson & Johnson"},
+
+{id:36,title:"Gesture-Controlled Drone for Paralysed Patients' Environment Interaction",problem:"Patients with ALS or high-level spinal injury cannot control their environment; existing eye-gaze systems cost ₹5+ lakhs.",users:"ALS patients, spinal injury wards, assistive tech NGOs",inn:9,res:8,plc:8,sta:7,dif:"Very Hard",cost:"₹15,000–28,000",hw:"DJI Tello, Raspberry Pi, OAK-D, EMG or eye-tracking module",sw:"MediaPipe, TensorFlow Lite, Tello SDK, Flutter",ai:"Micro-gesture recognition CNN, eye-gaze direction model, intent confidence threshold",rob:"Quadcopter, companion compute module",novel:"Ultra-low effort gesture (eyebrow raise, micro-finger twitch) drone control with intent confidence gating",paper:"Intent-driven drone control for motor-impaired users using micro-gesture recognition and confidence-gated commands",future:"Home automation integration, robotic arm drone payload, NHS/NIMHANS collaboration",recruit:"HCI + accessibility robotics + computer vision — Tobii, Ctrl-Labs (Meta), Microsoft AI"},
+
+{id:37,title:"AI-Powered Cattle Health Monitoring using Ear Tag IoT + Vision",problem:"India loses ₹10,000 Cr+ annually to undetected cattle disease; farmers in remote areas miss early symptoms.",users:"Dairy cooperatives, AMUL-affiliated farmers, veterinary departments",inn:8,res:8,plc:7,sta:8,dif:"Hard",cost:"₹10,000–18,000",hw:"Ear tag accelerometer+temp (custom PCB or RFID), Raspberry Pi cam, solar gateway",sw:"MQTT, InfluxDB, TensorFlow Lite, Flutter",ai:"Rumination activity classifier, lameness detection from gait accelerometry, fever anomaly detector",rob:"None (optional milking parlour camera)",novel:"Multi-behavioural anomaly detection (rumination + gait + temp) for early disease flag 48h before clinical symptoms",paper:"Early cattle disease detection via multi-behavioural IoT sensor fusion with temporal anomaly modelling",future:"AMUL cooperative integration, AI vet referral via WhatsApp, National Animal Disease Control Programme",recruit:"AgriTech + IoT + embedded ML — Stellapps, ConnectRural, Jio AgroTech"},
+
+{id:38,title:"Real-Time Emotion-Adaptive Music Generator for Mental Wellness",problem:"30% of Indian youth report anxiety/depression; passive music streaming does not respond to user's real-time emotional state.",users:"Mental wellness apps, meditation platforms, therapy support",inn:8,res:8,plc:8,sta:8,dif:"Hard",cost:"₹3,000–7,000",hw:"Raspberry Pi / laptop, webcam, optional EEG / GSR wristband",sw:"PyTorch, MediaPipe, Magenta.js, FastAPI, React",ai:"Facial expression emotion classifier (FER+ dataset), EEG emotion valence model, Magenta music VAE",rob:"None",novel:"Closed-loop real-time emotion → music parameter mapping (tempo, key, timbre) with user feedback reinforcement",paper:"Closed-loop emotion-adaptive music generation using facial expression and physiological signal fusion",future:"Integration with Spotify API, telehealth app module, clinical trial for anxiety reduction",recruit:"Affective computing + generative AI + wellness — Headspace, Calm, YourDost, Wysa"},
+
+{id:39,title:"Low-Power Flood Early Warning Sensor Network with Edge AI",problem:"93% of Indian flood deaths are in rural areas; centralised weather agency warnings reach villages 6–12 hours late.",users:"NDMA, state disaster management authorities, gram panchayats",inn:8,res:8,plc:7,sta:7,dif:"Hard",cost:"₹12,000–22,000",hw:"Ultrasonic water level sensor, rain gauge, ESP32, LoRa, solar + battery, gateway RPi",sw:"MQTT, InfluxDB, Grafana, TensorFlow Lite, Twilio SMS alert",ai:"LSTM river level rise forecasting, rainfall–runoff correlation model, alert threshold optimiser",rob:"Autonomous solar-recharged buoy node (optional)",novel:"Distributed edge prediction (each node predicts locally) eliminates connectivity dependency for alerts",paper:"Edge-deployed LSTM flood forecasting for rural early warning using LoRa sensor mesh with solar autonomy",future:"Integration with IMD API, voice alert in local language, Jal Shakti Ministry collaboration",recruit:"Disaster tech + IoT + edge AI — ISRO NRSC, NDMA, IBM Sustainability, UN OCHA"},
+
+{id:40,title:"AI-Powered Counterfeit Medicine Detection using Spectroscopy + Vision",problem:"25% of medicines in Indian markets are substandard or counterfeit; lab tests take days and are inaccessible at pharmacies.",users:"Drug inspectors, pharmacies, hospital procurement, NGOs",inn:9,res:9,plc:8,sta:9,dif:"Hard",cost:"₹12,000–22,000",hw:"Raspberry Pi 4, AS7265x spectral sensor, macro camera, LED light source",sw:"PyTorch, scikit-learn, FastAPI, Flutter",ai:"Spectral fingerprint CNN classifier, packaging OCR + hologram authenticity scorer",rob:"None",novel:"Multi-sensor (spectral + visual) fusion for on-the-spot medicine authentication below ₹15,000 per device",paper:"Counterfeit pharmaceutical detection via spectral-visual sensor fusion and CNN classification for point-of-care use",future:"CDSCO integration, blockchain-based drug traceability, WHO Essential Medicines list coverage",recruit:"MedTech + sensor AI + regulatory compliance — WHO, Cipla, Sun Pharma, CDSCO"},
+
+{id:41,title:"Robotic Exoskeleton for Industrial Worker Back Injury Prevention",problem:"Back injuries cost Indian industry ₹8,000 Cr+ annually; passive back braces are uncomfortable and non-adaptive.",users:"Factory workers, warehouse staff, construction workers",inn:8,res:8,plc:8,sta:9,dif:"Very Hard",cost:"₹25,000–45,000",hw:"EMG sensors, servo actuators, IMU, Arduino, 3D printed frame",sw:"TensorFlow Lite, Edge Impulse, BLE app, MATLAB",ai:"Lifting motion classifier, spine load estimator (EMG-based), adaptive assistance RL",rob:"Passive/active hybrid exoskeleton spine support frame",novel:"Predictive exoskeleton activation — assistance begins before load is fully lifted, using EMG intent detection",paper:"Predictive EMG-intent-driven active back exoskeleton for industrial lifting injury prevention",future:"ISO 11226 compliance testing, manufacturing industry SaaS for injury insurance reduction",recruit:"Industrial robotics + wearables + safety — Hyundai Robotics, SuitX, Ottobock, Tata Steel safety"},
+
+{id:42,title:"Autonomous UAV for Power Line Inspection & Fault Detection",problem:"Power line manual inspection covers only 15% of India's 1.2 million km network annually; outages cost ₹4,000 Cr.",users:"DISCOMS, PGCIL, private power transmission companies",inn:8,res:8,plc:9,sta:8,dif:"Very Hard",cost:"₹30,000–55,000",hw:"Custom quadcopter, Pixhawk, OAK-D/thermal camera, RPi 4, GPS RTK",sw:"ROS2, YOLOv8, OpenCV thermal, ArduPilot",ai:"Thermal anomaly detection CNN, insulator defect YOLOv8, corrosion classification",rob:"GPS-waypoint autonomous flight, gimbal stabilisation, tether option",novel:"Automated RGB + thermal fusion for simultaneous structural and electrical fault detection in single pass",paper:"Autonomous power line inspection via UAV-mounted thermal-RGB sensor fusion and YOLOv8 defect classification",future:"LIDAR 3D reconstruction, AI-generated maintenance work orders, PGCIL deployment trial",recruit:"Inspection AI + UAV + thermal vision — PGCIL, TATA Power, GE Grid, Honeywell Aerospace"},
+
+{id:43,title:"AI Sign Language Avatar for Live Broadcast Accessibility",problem:"Only 3% of Indian TV programs have sign language interpretation; ISL interpreters are scarce and expensive.",users:"Doordarshan, news channels, government press events, OTT platforms",inn:9,res:9,plc:8,sta:8,dif:"Very Hard",cost:"₹5,000–10,000",hw:"Standard GPU laptop / cloud, webcam",sw:"Three.js, Blender rigged avatar, PyTorch, Whisper, FastAPI",ai:"Whisper ASR → ISL gloss translation model → pose sequence generator → avatar animation",rob:"None",novel:"End-to-end ASR-to-3D-avatar pipeline for Indian Sign Language broadcast captioning",paper:"End-to-end automatic sign language avatar synthesis for broadcast accessibility using ASR-to-ISL gloss mapping",future:"Real-time broadcast plugin, OTT SDK, TRAI mandate compliance tool",recruit:"NLP + 3D animation + accessibility — Netflix India, Doordarshan, Microsoft Accessibility, Meta"},
+
+{id:44,title:"Predictive Maintenance System for Industrial Motors using Vibration ML",problem:"Unplanned industrial motor downtime costs Indian manufacturers ₹2 lakh/hour on average; vibration symptoms precede failure by weeks.",users:"Textile mills, cement plants, pump manufacturers, FMCG factories",inn:7,res:7,plc:9,sta:9,dif:"Medium",cost:"₹6,000–12,000",hw:"ADXL345 / MPU-6050, ESP32, OTA firmware, cloud gateway",sw:"InfluxDB, Grafana, TensorFlow, FastAPI, AWS IoT Core",ai:"FFT spectral features + XGBoost failure classifier, LSTM remaining useful life (RUL) estimator",rob:"None",novel:"Remaining useful life estimation (not just binary failure alert) with calibrated uncertainty bounds",paper:"Remaining useful life estimation for industrial motors via vibration spectral features and uncertainty-aware LSTM",future:"OEM integration, insurance premium reduction, predictive MRO inventory optimisation",recruit:"Industrial IoT + predictive analytics — Siemens, ABB, Honeywell, Emerson, Bosch Industry 4.0"},
+
+{id:45,title:"AI-Powered Marine Debris Detection and Mapping from Coastal UAV Footage",problem:"India's 7,500 km coastline accumulates tonnes of plastic daily; manual surveys cover <1% of area monthly.",users:"Ministry of Earth Sciences, coastal municipalities, NGOs, fishing communities",inn:8,res:9,plc:7,sta:7,dif:"Hard",cost:"₹15,000–28,000",hw:"DJI Tello / mid-range drone, RPi 4, OAK-D",sw:"YOLOv8, OpenCV, FastAPI, QGIS, Leaflet.js",ai:"YOLOv8 marine debris type classifier, density map generation, temporal hotspot tracking",rob:"Autonomous coastal survey flight path",novel:"Debris type classification (macro vs micro plastic vs fishing nets) from altitude with uncertainty-aware mapping",paper:"Aerial coastal marine debris detection and density mapping via UAV-mounted YOLOv8 with uncertainty quantification",future:"Integration with NCSCM, ISRO coastal monitoring satellites, NGO cleanup route optimisation",recruit:"Environmental AI + UAV + geospatial — ISRO, WRI India, WWF, MoES"},
+
+{id:46,title:"Real-Time Hate Speech & Misinformation Detection for Indian Regional Languages",problem:"WhatsApp-spread fake news triggers communal violence in India; tools for Tamil, Telugu, Malayalam NLP are weak.",users:"Social media platforms, election commissions, news verification agencies",inn:9,res:9,plc:9,sta:8,dif:"Hard",cost:"₹1,000–3,000",hw:"Standard laptop / cloud GPU",sw:"HuggingFace Transformers (IndicBERT, MuRIL), FastAPI, React, PostgreSQL",ai:"Fine-tuned MuRIL for regional language hate speech, multi-class misinformation classifier, cross-lingual transfer",rob:"None",novel:"Code-mixed (Tanglish, Hinglish) misinformation detection with inter-language knowledge transfer",paper:"Cross-lingual misinformation and hate speech detection for Indian regional languages using code-mixed MuRIL fine-tuning",future:"WhatsApp Business API integration, ECI collaboration, NewsGuard-style browser extension for India",recruit:"NLP + responsible AI + safety — Meta AI, Google, ShareChat, Koo, ECI Tech"},
+
+{id:47,title:"AI-Powered Personalised Physiotherapy via Pose Estimation",problem:"India has 1 physiotherapist per 28,000 people; physiotherapy compliance at home is <30% without supervision.",users:"Post-surgical patients, sports injury rehabilitation, elderly care",inn:8,res:8,plc:8,sta:8,dif:"Medium",cost:"₹2,000–5,000",hw:"Standard laptop/phone camera",sw:"MediaPipe Pose, TensorFlow, Flutter, Firebase, OpenCV",ai:"Pose estimation + exercise form classifier, rep counter, adaptive difficulty RL, DTW joint angle comparison",rob:"None",novel:"DTW-based real-time joint angle comparison against therapist-recorded reference with spoken correction",paper:"Home physiotherapy compliance system using pose estimation and DTW exercise form scoring with adaptive difficulty",future:"Physiotherapy SaaS, OT/PT clinic integration, ABDM health record link",recruit:"Computer vision + healthcare AI + mobile — PhysiApp, Kinetica, Hinge Health, Practo, Apollo"},
+
+{id:48,title:"Autonomous Bin-Sorting Robot for Solid Waste Segregation",problem:"India generates 62M tonnes of municipal waste daily; <20% is properly segregated, causing landfill overflow.",users:"Municipal corporations, waste management agencies, recycling companies",inn:7,res:7,plc:8,sta:8,dif:"Hard",cost:"₹20,000–35,000",hw:"Raspberry Pi 4, OAK-D, robotic arm kit, conveyor belt, servo gripper",sw:"ROS2, YOLOv8, MoveIt2, FastAPI",ai:"YOLOv8 waste type classifier (wet/dry/e-waste/metal/plastic), grasping pose estimator, conveyor sync",rob:"5-DOF arm, conveyor, pneumatic/servo gripper",novel:"Material type classification + grasp pose planning in a single inference pass; operates at 20 items/min",paper:"Real-time autonomous waste segregation using YOLOv8 material classification and grasp pose estimation on a robotic arm",future:"Industrial-scale version, integration with BBMP/MCGM SWM departments, dry waste MRF automation",recruit:"Robotic manipulation + waste management + computer vision — ITC, Nepra Resources, UltraTech Cement"},
+
+{id:49,title:"AI-Based Non-Invasive Blood Glucose Monitoring via PPG Signals",problem:"India has 77 million diabetics; finger-prick glucometers cause daily discomfort and compliance fatigue.",users:"Diabetic patients, endocrinologists, wellness wearable companies",inn:10,res:10,plc:9,sta:10,dif:"Very Hard",cost:"₹5,000–10,000",hw:"MAX30102 PPG sensor, custom PCB or smartwatch, ESP32, BLE",sw:"TensorFlow Lite, Edge Impulse, Python, Flutter, BLE stack",ai:"1D-CNN on PPG waveform morphology features, transformer for temporal glucose trend prediction",rob:"Wrist wearable form factor",novel:"Subject-independent glucose estimation from PPG morphological features with calibration-free design",paper:"Non-invasive blood glucose estimation from PPG morphological features using subject-independent 1D-CNN",future:"Regulatory (CDSCO) pathway, tie-up with Abbott or Dexcom, ₹500 Cr wearable health market opportunity",recruit:"Biomedical ML + edge AI + wearables — Samsung Health, Garmin, Ultrahuman, Mohana Health"},
+
+{id:50,title:"Autonomous Road-Marking Robot for Rural Road Safety",problem:"India's rural roads have <10% lane marking compliance; absence of markings causes 40% of rural highway fatalities.",users:"NHAI, PMGSY, state PWD departments",inn:8,res:7,plc:8,sta:8,dif:"Hard",cost:"₹22,000–40,000",hw:"Raspberry Pi 4, GPS RTK, servo-controlled paint nozzle, wheel encoder, IMU, LiDAR",sw:"ROS2, OpenCV, GNSS library, FastAPI",ai:"Line planning algorithm, GPS-guided PID trajectory controller, road edge detection CNN",rob:"Paint dispensing mechanism, GPS-guided skid-steer chassis",novel:"Low-cost GPS-RTK guided autonomous lane marking at ₹1/m vs ₹15/m for manual marking teams",paper:"Autonomous rural road lane marking robot with GPS-RTK guidance and vision-based road edge detection",future:"Solar-powered version, integration with PMGSY road database, franchise model for highway contractors",recruit:"Autonomous vehicles + robotics + infrastructure — NHAI, L&T, JCB India, Trimble"}
+];
+
+const TOP10=[49,9,16,19,22,6,17,35,2,11];
+const TOP10_P=[5,6,27,34,44,24,35,49,2,31];
+const TOP10_I=[49,22,16,19,9,35,10,28,46,25];
+const TOP10_S=[49,14,27,2,31,34,3,40,21,44];
+const BEST=49;
+
+function score(v,max){const pct=v/max*100;return `<div style="display:inline-flex;align-items:center;gap:6px"><span style="font-weight:500">${v}/${max}</span><div style="width:60px;height:6px;border-radius:3px;background:var(--color-border-tertiary)"><div style="width:${pct}%;height:6px;border-radius:3px;background:#185FA5"></div></div></div>`}
+
+function buildCard(p,idx){
+  const isTop=TOP10.includes(p.id);
+  return `<div class="project-card${isTop?' featured':''}" id="card-${p.id}" data-dif="${p.dif}" data-title="${p.title.toLowerCase()}">
+    <div class="card-header">
+      <div class="card-num">${idx+1}</div>
+      <div>
+        <div class="card-title">${p.title}${isTop?'<span class="top-badge">Top 10</span>':''}</div>
+        <div class="card-subtitle">${p.users}</div>
+      </div>
+    </div>
+    <div class="score-row">
+      <span class="score-pill s-inn">Innovation ${p.inn}/10</span>
+      <span class="score-pill s-res">Research ${p.res}/10</span>
+      <span class="score-pill s-plc">Placement ${p.plc}/10</span>
+      <span class="score-pill s-sta">Startup ${p.sta}/10</span>
+      <span class="score-pill s-dif">${p.dif}</span>
+      <span class="score-pill s-cost">${p.cost}</span>
+    </div>
+    <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:.5rem">${p.problem}</div>
+    <button class="expand-btn" onclick="toggleExtra(${p.id})"><i class="ti ti-chevron-down" aria-hidden="true"></i> Show full details</button>
+    <div class="extra" id="extra-${p.id}">
+      <div class="extra-grid">
+        <div class="detail-item"><div class="detail-label">Hardware</div><div class="detail-val">${p.hw}</div></div>
+        <div class="detail-item"><div class="detail-label">Software stack</div><div class="detail-val">${p.sw}</div></div>
+        <div class="detail-item"><div class="detail-label">AI models</div><div class="detail-val">${p.ai}</div></div>
+        <div class="detail-item"><div class="detail-label">Robotics components</div><div class="detail-val">${p.rob}</div></div>
+        <div class="detail-item"><div class="detail-label">Novel research opportunity</div><div class="detail-val">${p.novel}</div></div>
+        <div class="detail-item"><div class="detail-label">Possible IEEE paper topic</div><div class="detail-val">${p.paper}</div></div>
+        <div class="detail-item"><div class="detail-label">Future scope</div><div class="detail-val">${p.future}</div></div>
+        <div class="detail-item"><div class="detail-label">Why recruiters love it</div><div class="detail-val">${p.recruit}</div></div>
+      </div>
+    </div>
+  </div>`
+}
+
+function renderAll(){
+  const c=document.getElementById('cards-container');
+  c.innerHTML=P.map((p,i)=>buildCard(p,i)).join('');
+}
+
+function toggleExtra(id){
+  const el=document.getElementById('extra-'+id);
+  const btn=el.previousElementSibling;
+  if(el.classList.contains('open')){el.classList.remove('open');btn.innerHTML='<i class="ti ti-chevron-down" aria-hidden="true"></i> Show full details';}
+  else{el.classList.add('open');btn.innerHTML='<i class="ti ti-chevron-up" aria-hidden="true"></i> Hide details';}
+}
+
+let curDif='all';
+function filterCards(q){
+  const search=q.toLowerCase();
+  document.querySelectorAll('.project-card').forEach(c=>{
+    const t=c.dataset.title||'';
+    const d=c.dataset.dif||'';
+    const matchSearch=t.includes(search);
+    const matchDif=curDif==='all'||d===curDif;
+    c.style.display=(matchSearch&&matchDif)?'':'none';
+  });
+}
+function setDif(dif,btn){
+  curDif=dif;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  filterCards(document.getElementById('search-box').value);
+}
+
+function buildRankTable(ids,tableId,label){
+  const t=document.getElementById(tableId);
+  t.innerHTML=`<tr><th>Rank</th><th>Project</th><th>Inn</th><th>Research</th><th>Placement</th><th>Startup</th></tr>`;
+  ids.forEach((id,i)=>{
+    const p=P.find(x=>x.id===id);
+    const badge=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
+    t.innerHTML+=`<tr>
+      <td><span class="rank-badge ${badge}">${i+1}</span></td>
+      <td><strong style="font-weight:500;font-size:13px">${p.title}</strong><br><span style="font-size:11px;color:var(--color-text-secondary)">${p.dif} · ${p.cost}</span></td>
+      <td>${p.inn}/10</td><td>${p.res}/10</td><td>${p.plc}/10</td><td>${p.sta}/10</td>
+    </tr>`;
+  });
+}
+
+function buildRecommendation(){
+  const p=P.find(x=>x.id===BEST);
+  const el=document.getElementById('rec-content');
+  el.innerHTML=`
+    <div class="project-card featured" style="border-color:#1D9E75;border-width:2px">
+      <div class="rec-hero">
+        <div>
+          <div style="font-size:11px;font-weight:800;color:#085041;background:#E1F5EE;padding:4px 12px;border-radius:999px;display:inline-block;margin-bottom:.75rem;letter-spacing:.03em">Panel unanimous recommendation</div>
+          <div style="font-size:24px;font-weight:800;margin-bottom:.35rem;letter-spacing:-.03em">${p.title}</div>
+          <div class="rec-score">Best mix of research novelty, hardware depth, placement value, and startup story.</div>
+        </div>
+      </div>
+      <div class="score-row">
+        <span class="score-pill s-inn">Innovation ${p.inn}/10</span>
+        <span class="score-pill s-res">Research ${p.res}/10</span>
+        <span class="score-pill s-plc">Placement ${p.plc}/10</span>
+        <span class="score-pill s-sta">Startup ${p.sta}/10</span>
+        <span class="score-pill s-dif">${p.dif}</span>
+        <span class="score-pill s-cost">${p.cost}</span>
+      </div>
+    </div>
+    <div class="rec-box">
+      <div class="panel-voice">
+        <div class="avatar av-ieee">IEEE</div>
+        <div><strong style="font-weight:500">IEEE Reviewer:</strong> Non-invasive glucose monitoring is one of the most active areas in wearable biosensing. A subject-independent PPG-based CNN with calibration-free design fills a genuine gap — the IEEE Sensors Journal and IEEE TBME are obvious venues. Publishability score: 10/10.</div>
+      </div>
+      <div class="panel-voice">
+        <div class="avatar av-rob">ROB</div>
+        <div><strong style="font-weight:500">Robotics Engineer:</strong> Embedded signal acquisition on MAX30102, PCB design, BLE stack integration, power optimisation — this is real embedded systems engineering, not a software project dressed up as hardware. Shows depth.</div>
+      </div>
+      <div class="panel-voice">
+        <div class="avatar av-ai">AI</div>
+        <div><strong style="font-weight:500">AI Researcher:</strong> The core challenge — subject-independent calibration-free glucose regression from noisy PPG — is genuinely unsolved at the student level. It requires signal processing expertise, model architecture decisions, and rigorous validation design. This is thesis-grade AI work.</div>
+      </div>
+      <div class="panel-voice">
+        <div class="avatar av-start">FOUNDER</div>
+        <div><strong style="font-weight:500">Startup Founder:</strong> India has 77 million diabetics. Abbott's Libre costs ₹3,000/month. A ₹2,000 one-time wearable that works is a ₹15,000 Cr opportunity. This is a venture-backable product from day one. You could raise a pre-seed on the demo alone.</div>
+      </div>
+      <div class="panel-voice">
+        <div class="avatar av-rec">REC</div>
+        <div><strong style="font-weight:500">Technical Recruiter:</strong> When I see this on a resume — embedded ML, biomedical signal processing, wearable hardware, Edge AI — I schedule the interview immediately. Samsung, Garmin, Ultrahuman, and Mohana Health all have open roles that this directly targets.</div>
+      </div>
+    </div>
+    <div class="rec-box">
+      <h3>Why this is the best fit for your profile</h3>
+      <div style="font-size:13px;line-height:1.8;color:var(--color-text-secondary);margin-top:.5rem">
+        <b style="color:var(--color-text-primary);font-weight:500">1. Hits every skill on your list</b> — Python, IoT, embedded systems (ESP32 + PCB), ML/DL (1D-CNN on PPG), Edge AI (TFLite), and a wearable form factor that showcases product thinking.<br><br>
+        <b style="color:var(--color-text-primary);font-weight:500">2. Budget matches student constraints</b> — ₹5,000–10,000 total. MAX30102 costs ₹200. The compute sits on a ₹800 ESP32. Most of the cost is time and skill.<br><br>
+        <b style="color:var(--color-text-primary);font-weight:500">3. Research novelty is clear and defensible</b> — Subject-independent calibration-free PPG glucose regression is an open research problem. Your paper won't be incremental; it'll be genuinely new.<br><br>
+        <b style="color:var(--color-text-primary);font-weight:500">4. Startup potential is real</b> — Not a "maybe someday" product. Prototyping a non-invasive glucometer as a student project with a working demo is a credible pre-seed story in India's MedTech space.<br><br>
+        <b style="color:var(--color-text-primary);font-weight:500">5. Placement differentiation</b> — 99% of CS students apply to the same jobs with the same projects. A biomedical Edge AI wearable from a CS student is a pattern interrupt in every ATS and recruiter inbox.<br><br>
+        <b style="color:var(--color-text-primary);font-weight:500">Strong runner-up:</b> Project #9 (Adaptive Robotic Exoskeleton Glove for Stroke Rehabilitation) if you want heavier robotics hardware involvement, or Project #2 (Sign Language Translator) for a more accessible budget and stronger social impact narrative.
+      </div>
+    </div>
+    <button class="cta-btn" onclick="sendPrompt('Tell me more about the non-invasive PPG glucose monitoring project — give me a full 8-month implementation plan, dataset suggestions, and IEEE publication strategy')">Deep dive: build plan & IEEE strategy ↗</button>
+  `;
+}
+
+function showTab(name){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+renderAll();
+buildRankTable(TOP10,'top10-table','Overall');
+buildRankTable(TOP10_P,'placement-table','Placement');
+buildRankTable(TOP10_I,'ieee-table','IEEE');
+buildRankTable(TOP10_S,'startup-table','Startup');
+buildRecommendation();
+</script>
